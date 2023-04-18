@@ -25,7 +25,7 @@ const fronteggOptions = {
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <FronteggProvider {...fronteggOptions}>
+    <FronteggProvider history={history} {...fronteggOptions}>
       <RouterProvider router={router} />
     </FronteggProvider>
   </React.StrictMode>
