@@ -2,15 +2,16 @@ import {
     AmberfloProvider,
     UsageByMeterLineGraph,
     UsageByMeterTable
-  } from "@amberflo/uikit";
+    // import from 'components'
+  } from "@amberflo/uikit/components";
   // Though the above imports work, instead of doing that
   // we suggest you to import components like this:
   // import { AmberfloProvider } from "@amberflo/uikit/components/molecules";
   // import { UsageByMeterLineGraph } from "@amberflo/uikit/components/organisms/UsageByMeterLineGraph";
   // import { UsageByMeterTable } from "@amberflo/uikit/components/organisms/UsageByMeterTable";
-  
-  import "../styles/amberflo.css";
-  
+
+  // import "../styles/amberflo.css";
+
   export default function Amberflow() {
     return (
       <div className="wrapper">
@@ -21,10 +22,9 @@ import {
             fontSize: 16
           }}
         >
-          <UsageByMeterLineGraph graphTextColor="white" />
+          <UsageByMeterLineGraph graphTextColor='red' />
           <UsageByMeterTable />
         </AmberfloProvider>
       </div>
     );
   }
-  

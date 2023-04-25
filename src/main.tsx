@@ -35,7 +35,8 @@ export const routes = createRoutesFromElements(
   >
     <Route path="" element={<PublicRoutePage/>}/>
     <Route path="private-route" element={<ProtectRoute><PrivateRoutePage/></ProtectRoute>}/>
-    <Route path="/amberflo" element={<Amberflo/>}/>
+    {/* I had to remove the initial `/` to make it work */}
+    <Route path="amberflo" element={<Amberflo/>}/>
   </Route>
 );
 
