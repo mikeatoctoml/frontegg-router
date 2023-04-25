@@ -27,7 +27,7 @@ export const routes = createRoutesFromElements(
   <Route
     path='/*'
     element={
-      <FronteggProvider history={history} hostedLoginBox={false} {...fronteggOptions}>
+      <FronteggProvider history={history} hostedLoginBox={true} {...fronteggOptions}>
         <App />
       </FronteggProvider>
     }

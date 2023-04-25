@@ -4,6 +4,7 @@ import fronteggLogo from "../frontegg/logo.svg";
 
 const PrivateRoutePage: VFC = () => {
   const user = useAuthUser()
+  console.log("PRIVATE");
 
   return  <div className="App">
     <header className="App-header">

@@ -1,6 +1,6 @@
 import { VFC, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useIsAuthenticated, useAuthRoutes, useAuthUser, AdminPortal, useLoginWithRedirect } from '@frontegg/react'
+import { useAuthRoutes, useAuthUser, AdminPortal, useLoginWithRedirect, useAuth } from '@frontegg/react'
 import { ContextHolder } from '@frontegg/rest-api'
 import logo from "../assets/logo.svg";
 import fronteggLogo from "../frontegg/logo.svg";
@@ -10,9 +10,8 @@ const UnauthorizedButtons: VFC = () => {
   const { loginUrl } = useAuthRoutes()
   const { baseUrl } = ContextHolder.getContext()
 
-  const goToLogin = useCallback(() => {
-    navigate([loginUrl, '?redirectUrl=', encodeURIComponent(location.pathname + location.search + location.hash)].join(''))
-  }, [navigate, loginUrl])
+  const { user, isAuthenticated } = useAuth();
+  const loginWithRedirect = useLoginWithRedirect();
 
   const goToPrivateRouter = useCallback(() => {
     navigate('./private-route')
@@ -24,12 +23,10 @@ const UnauthorizedButtons: VFC = () => {
     </p>
   }
 
-  const loginWithRedirect = useLoginWithRedirect();
-
   return <>
     <h4>Hello there, press "Go to login" button for authentication</h4>
     <div className="App-Buttons">
-      <button className="App-button" onClick={goToLogin}>Go to login</button>
+      <button className="App-button" onClick={() => loginWithRedirect()}>Go to login</button>
       <button className="App-button" onClick={goToPrivateRouter}>Test private route</button>
     </div>
     <br/>
@@ -40,16 +37,15 @@ const UnauthorizedButtons: VFC = () => {
 const AuthorizedButtons: VFC = () => {
   const navigate = useNavigate()
   const user = useAuthUser()
-  const { logoutUrl } = useAuthRoutes()
 
   const openAdminPortal = useCallback(() => {
     AdminPortal.show()
   }, [])
 
-  const goToLogout = useCallback(() => {
-    navigate(logoutUrl)
-  }, [navigate, logoutUrl])
-
+  const logout = () => {
+    const baseUrl = ContextHolder.getContext().baseUrl;
+    window.location.href = `${baseUrl}oauth/logout?post_logout_redirect_uri=${window.location}`;
+  };
 
   const goToPrivateRouter = useCallback(() => {
     navigate('./private-route')
@@ -61,7 +57,7 @@ const AuthorizedButtons: VFC = () => {
     <div className="App-Buttons">
       <button className="App-button" data-test-id="open-admin-portal-btn" onClick={openAdminPortal}>Open Admin Portal</button>
       <button className="App-button" onClick={goToPrivateRouter}>Go to private route</button>
-      <button className="App-button" onClick={goToLogout}>Logout</button>
+      <button className="App-button" onClick={() => logout()}>Logout</button>
     </div>
 
     <br/>
@@ -77,7 +73,8 @@ const AuthorizedButtons: VFC = () => {
 }
 
 const PublicRoutePage: VFC = () => {
-  const isAuthenticated = useIsAuthenticated()
+  const { user, isAuthenticated } = useAuth();
+  console.log("PUBLIC");
 
   return <div className="App">
     <header className="App-header">
