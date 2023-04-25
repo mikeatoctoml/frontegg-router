@@ -31,6 +31,7 @@ const UnauthorizedButtons: VFC = () => {
     <div className="App-Buttons">
       <button className="App-button" onClick={goToLogin}>Go to login</button>
       <button className="App-button" onClick={goToPrivateRouter}>Test private route</button>
+      <a href="/amberflo">Amberflo</a>
     </div>
     <br/>
     <br/>

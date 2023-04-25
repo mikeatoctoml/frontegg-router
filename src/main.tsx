@@ -5,6 +5,7 @@ import { createBrowserHistory } from "history";
 import { FronteggProvider } from "@frontegg/react";
 import PublicRoutePage from "./routes/PublicRoutePage";
 import PrivateRoutePage from "./routes/PrivateRoutePage";
+import Amberflo from "./routes/amberflo";
 import ProtectRoute from "./frontegg/ProtectRoute";
 
 const fronteggOptions = {
@@ -34,6 +35,7 @@ export const routes = createRoutesFromElements(
   >
     <Route path="" element={<PublicRoutePage/>}/>
     <Route path="private-route" element={<ProtectRoute><PrivateRoutePage/></ProtectRoute>}/>
+    <Route path="/amberflo" element={<Amberflo/>}/>
   </Route>
 );
 
