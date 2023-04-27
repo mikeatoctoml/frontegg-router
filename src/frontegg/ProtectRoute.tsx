@@ -1,19 +1,16 @@
 import { FC, useEffect } from 'react';
-import { useAuthRoutes, useAuthUserOrNull, useIsAuthenticated } from "@frontegg/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLoginWithRedirect, useAuthUserOrNull, useIsAuthenticated } from "@frontegg/react";
 
 const ProtectRoute: FC = (props) => {
   const user = useAuthUserOrNull();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { loginUrl } = useAuthRoutes();
   const isAuthenticated = useIsAuthenticated();
+  const loginWithRedirect = useLoginWithRedirect();
 
   useEffect(() => {
     if(!isAuthenticated) {
-      navigate([loginUrl, '?redirectUrl=', encodeURIComponent(location.pathname + location.search + location.hash)].join(''))
+      loginWithRedirect();
     }
-  }, [navigate, loginUrl])
+  }, [loginWithRedirect, isAuthenticated])
 
   if (isAuthenticated && user)
     return <>{props.children}</>;

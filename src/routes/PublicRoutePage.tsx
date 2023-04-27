@@ -1,16 +1,14 @@
-import { VFC, useCallback } from 'react'
+import { VFC, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuthRoutes, useAuthUser, AdminPortal, useLoginWithRedirect, useAuth } from '@frontegg/react'
+import { useAuthUser, AdminPortal, useLoginWithRedirect, useAuth } from '@frontegg/react'
 import { ContextHolder } from '@frontegg/rest-api'
 import logo from "../assets/logo.svg";
 import fronteggLogo from "../frontegg/logo.svg";
 
 const UnauthorizedButtons: VFC = () => {
   const navigate = useNavigate()
-  const { loginUrl } = useAuthRoutes()
   const { baseUrl } = ContextHolder.getContext()
 
-  const { user, isAuthenticated } = useAuth();
   const loginWithRedirect = useLoginWithRedirect();
 
   const goToPrivateRouter = useCallback(() => {
@@ -73,7 +71,8 @@ const AuthorizedButtons: VFC = () => {
 }
 
 const PublicRoutePage: VFC = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
+
   console.log("PUBLIC");
 
   return <div className="App">
