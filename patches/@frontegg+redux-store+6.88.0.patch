@@ -1,0 +1,39 @@
+diff --git a/node_modules/@frontegg/redux-store/auth/LoginState/index.js b/node_modules/@frontegg/redux-store/auth/LoginState/index.js
+index e30fa90..9256d23 100644
+--- a/node_modules/@frontegg/redux-store/auth/LoginState/index.js
++++ b/node_modules/@frontegg/redux-store/auth/LoginState/index.js
+@@ -25,6 +25,9 @@ const actions = {
+   requestHostedLoginAuthorize: createAction(`${authStoreName}/requestHostedLoginAuthorize`, payload => ({
+     payload
+   })),
++  initHostedLoginSilent: createAction(`${authStoreName}/initHostedLoginSilent`, payload => ({
++    payload
++  })),
+   handleHostedLoginCallback: createAction(`${authStoreName}/handleHostedLoginCallback`, payload => ({
+     payload
+   })),
+diff --git a/node_modules/@frontegg/redux-store/auth/LoginState/saga.js b/node_modules/@frontegg/redux-store/auth/LoginState/saga.js
+index 689d68f..d03c391 100644
+--- a/node_modules/@frontegg/redux-store/auth/LoginState/saga.js
++++ b/node_modules/@frontegg/redux-store/auth/LoginState/saga.js
+@@ -521,6 +521,12 @@ const getUri = urlStrategy => {
+     }
+   }
+ };
++function* initHostedLoginSilent() {
++  try {
++    yield requestHostedLoginSilentAuthorize();
++  } catch (e) {
++  }
++}
+ function* requestHostedLoginSilentAuthorize() {
+   const user = yield call(api.auth.silentOAuthRefreshToken);
+   if (user) {
+@@ -1752,6 +1758,7 @@ export function* loginSagas() {
+   yield takeLeading(actions.requestAuthorize, requestAuthorize);
+   yield takeLeading(actions.requestAuthorizeSSR, requestAuthorizeSSR);
+   yield takeLeading(actions.requestHostedLoginAuthorize, refreshOrRequestHostedLoginAuthorize);
++  yield takeLeading(actions.initHostedLoginSilent, initHostedLoginSilent);
+   yield takeLeading(actions.handleHostedLoginCallback, handleHostedLoginCallback);
+   yield takeLeading(actions.preLogin, preLogin);
+   yield takeLeading(actions.postLogin, postLogin);

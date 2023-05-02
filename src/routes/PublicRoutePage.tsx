@@ -1,4 +1,4 @@
-import { VFC, useCallback, useEffect } from 'react'
+import { VFC, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthUser, AdminPortal, useLoginWithRedirect, useAuth } from '@frontegg/react'
 import { ContextHolder } from '@frontegg/rest-api'
@@ -41,8 +41,9 @@ const AuthorizedButtons: VFC = () => {
   }, [])
 
   const logout = () => {
-    const baseUrl = ContextHolder.getContext().baseUrl;
-    window.location.href = `${baseUrl}oauth/logout?post_logout_redirect_uri=${window.location}`;
+    const baseUrl = ContextHolder.getContext().baseUrl as string;
+    const url = new URL(`/oauth/logout?post_logout_redirect_uri=${window.location}`, baseUrl);
+    window.location.href = url.toString();
   };
 
   const goToPrivateRouter = useCallback(() => {

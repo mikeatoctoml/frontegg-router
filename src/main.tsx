@@ -1,47 +1,44 @@
 import { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider, Outlet } from "react-router-dom";
-import { createBrowserHistory } from "history";
-import { FronteggProvider } from "@frontegg/react";
+import { FronteggAppOptions, FronteggProvider } from "@frontegg/react";
 import PublicRoutePage from "./routes/PublicRoutePage";
 import PrivateRoutePage from "./routes/PrivateRoutePage";
 import ProtectRoute from "./frontegg/ProtectRoute";
-import { useLoginWithRedirect, useAuth } from '@frontegg/react'
+import { useAuthActions } from "@frontegg/react";
 
-const fronteggOptions = {
+const fronteggOptions: FronteggAppOptions = {
   contextOptions: {
     baseUrl: "https://...",
     clientId: "...",
   },
+  hostedLoginBox: true,
   authOptions: {
     keepSessionAlive: true,
-  }
+  },
 };
 
 const App = () => {
+  return (
+    <FronteggProvider {...fronteggOptions}>
+      <AuthInit />
+      <Outlet />
+    </FronteggProvider>
+  );
+}
 
-  const { isAuthenticated } = useAuth();
-
-  const loginWithRedirect = useLoginWithRedirect();
+const AuthInit = () => {
+  const actions = useAuthActions();
   useEffect(() => {
-    if (!isAuthenticated) {
-      loginWithRedirect();
-    }
-  }, [isAuthenticated, loginWithRedirect]);
-
-  return (<Outlet/>);
-};
-
-const history = createBrowserHistory();
+    actions.initHostedLoginSilent();
+  }, []);
+  return null;
+}
 
 export const routes = createRoutesFromElements(
   <Route
     path='/*'
-    element={
-      <FronteggProvider history={history} hostedLoginBox={true} {...fronteggOptions}>
-        <App />
-      </FronteggProvider>
-    }
+    element={ <App />}
   >
     <Route path="" element={<PublicRoutePage/>}/>
     <Route path="private-route" element={<ProtectRoute><PrivateRoutePage/></ProtectRoute>}/>

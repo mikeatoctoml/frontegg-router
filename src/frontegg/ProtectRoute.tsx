@@ -1,8 +1,7 @@
 import { FC, useEffect } from 'react';
-import { useLoginWithRedirect, useAuthUserOrNull, useIsAuthenticated } from "@frontegg/react";
+import { useLoginWithRedirect, useIsAuthenticated } from "@frontegg/react";
 
 const ProtectRoute: FC = (props) => {
-  const user = useAuthUserOrNull();
   const isAuthenticated = useIsAuthenticated();
   const loginWithRedirect = useLoginWithRedirect();
 
@@ -12,7 +11,7 @@ const ProtectRoute: FC = (props) => {
     }
   }, [loginWithRedirect, isAuthenticated])
 
-  if (isAuthenticated && user)
+  if (isAuthenticated)
     return <>{props.children}</>;
   return null;
 };
